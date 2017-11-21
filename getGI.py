@@ -7,8 +7,10 @@ from Bio import Entrez
 
 Entrez.email = 'vsanche1@eafit.edu.co'
 
+# if '-s' in sys.argv:
+#     search_phrase = sys.argv[sys.argv.index('-s')+1]
+
 search_phrase = 'Rodentia[organism:exp]'
-# search_phrase = input('Enter search phrase \n')
 
 typeid = input('Enter ID type [ GI or acc ]: ')
 
