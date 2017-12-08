@@ -4,15 +4,23 @@
 import sys
 import pickle
 from Bio import Entrez
+import argparse
 
-Entrez.email = 'vsanche1@eafit.edu.co'
+parser = argparse.ArgumentParser(description='download GI or accession numbers\
+                                 from GenBank.')
+parser.add_argument('email', metavar='name@example.com', type=str, help='email\
+                    for NCBI Entrez tools')
+parser.add_argument('-s', metavar='ORGANISM', type=str, help='search phrase\
+                    . e.g. Rodentia[organism:exp]')
+parser.add_argument('-t', metavar='ID TYPE', type=str, help='ACC for accession\
+                    numbers or GI for GI numbers. Defaults to ACC.')
 
-# if '-s' in sys.argv:
-#     search_phrase = sys.argv[sys.argv.index('-s')+1]
+args = parser.parse_args()
 
-search_phrase = 'Rodentia[organism:exp]'
+Entrez.email = args.email
+organism = args.org
 
-typeid = input('Enter ID type [ GI or acc ]: ')
+typeid = args.t if args.t else 'ACC'
 
 
 total = []
