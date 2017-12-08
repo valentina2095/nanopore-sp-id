@@ -42,13 +42,15 @@ for index, n in enumerate(ncbi_values):
         search_phrase = '(' + n + ncbi_terms[index] + ')'
     else:
         if n != '' and index != len(ncbi_values)-1:
-            search_phrase = search_phrase + ' AND (' + n + ncbi_terms[index] + ')'
+            search_phrase = search_phrase + ' AND (' + n + ncbi_terms[index] + \
+            ')'
     if index == len(ncbi_values)-1 and n != '' and type(n) is not list:
         search_phrase = search_phrase + ' AND (' + n + ncbi_terms[index] + ')'
     if index == len(ncbi_values)-1 and n != '' and type(n) is list:
         for name in n:
             name = name.lstrip()
-            search_phrase = search_phrase + ' AND (' + name + ncbi_terms[index] + ')'
+            search_phrase = search_phrase + ' AND (' + name + ncbi_terms[index]\
+            + ')'
 
 
 print('\n Here is the complete search line that will be used: \n', search_phrase)
@@ -58,7 +60,9 @@ unprocessed = []
 rstart = args.start if args.start else 0
 rmax = 2000
 for i in range(5):
-    handle = Entrez.esearch(db='nuccore', term=search_phrase, retstart = rstart+i*rmax,retmax=rmax, rettype='gbwithparts', retmode="text",idtype="acc")
+    handle = Entrez.esearch(db='nuccore', term=search_phrase,
+    retstart = rstart+i*rmax, retmax=rmax, rettype='gbwithparts',
+    retmode="text",idtype="acc")
     print('\nThe esearch is complete')
 
     result = Entrez.read(handle, validate=False)
@@ -74,7 +78,8 @@ for i in range(5):
     start_day = datetime.date.today().weekday() # 0 is Monday, 6 is Sunday
     start_time = datetime.datetime.now().time()
 
-    if ((start_day < 5 and start_time > datetime.time(hour=21)) or (start_day < 5 and start_time < datetime.time(hour=5)) or start_day >= 5 or len(acc_numbers) <= 100 ):
+    if ((start_day < 5 and start_time > datetime.time(hour=21)) or (start_day <
+    5 and start_time < datetime.time(hour=5)) or start_day >= 5 or len(acc_numbers) <= 100 ):
         print('\nCalling Entrez...')
 
         auxiliar = 1

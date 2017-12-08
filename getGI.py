@@ -28,7 +28,9 @@ total = []
 rmax = 10000
 i = 0
 while True:
-    handle = Entrez.esearch(db='nuccore', term=search_phrase, retstart=i*rmax, retmax=rmax, rettype='gbwithparts', retmode='text', idtype=typeid)
+    handle = Entrez.esearch(db='nuccore', term=search_phrase, retstart=i*rmax,
+                           retmax=rmax, rettype='gbwithparts', retmode='text',
+                           idtype=typeid)
 
     result = Entrez.read(handle, validate = False)
     data = list(result['IdList'])

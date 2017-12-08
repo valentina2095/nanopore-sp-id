@@ -27,7 +27,8 @@ for fna in os.listdir(files):
             seq = SeqIO.read(handle, 'fasta')
 
         with open(files + '/' + fna, 'w') as out:
-            out.write('>gi|'+gi[ind]+'|ref|'+seq.id+'|'+seq.description[len(seq.id):]+'\n'+seq.id)
+            out.write('>gi|' + gi[ind] + '|ref|' + seq.id + '|' + \
+            seq.description[len(seq.id):] + '\n' + seq.id + '\n')
 
     except ValueError:
         print('ERROR: This search does not include the acc. number', fna)
