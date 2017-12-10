@@ -2,33 +2,38 @@
 
 import os
 import sys
+import pickle
 from Bio import SeqIO
 
 files = sys.argv[1]
 
-if os.path.exists('GI.txt'):
-    with open('GI.txt', 'r') as gi_file:
-        gi = (gi_file.read()[2:-2].split("', '"))
+if os.path.exists('GI.pickle'):
+    with open('GI.pickle', 'rb') as gi_file:
+        gi = pickle.load(gi_file)
+else:
+    print('There is no GI.pickle in the current directory')
+    sys.exit()
 
-if os.path.exists('acc.txt'):
-    with open('acc.txt', 'r') as acc_file:
-        acc = (acc_file.read()[2:-2].split("', '"))
+if os.path.exists('acc.pickle'):
+    with open('acc.pickle', 'rb') as acc_file:
+        acc = pickle.load(acc_file)
+else:
+    print('There is no acc.pickle in the current directory')
+    sys.exit()
 
-# from: NM_001357748.1 Mus musculus coatomer protein complex
-# to:   gi|1274096202|ref|NM_001357748.1| Mus musculus coatomer protein complex
+# from: >NM_001357748.1 Mus musculus coatomer protein complex
+# to:   >gi|1274096202|ref|NM_001357748.1| Mus musculus coatomer protein complex
 for fna in os.listdir(files):
     try:
-        if fna.endswith('.fna'):
-            ind = acc.index(fna[:-4])
-        if fna.endswith('.fasta'):
-            ind = acc.index(fna[:-6])
+        ind = acc.index(os.path.splitext(fna)[0])
 
         with open(files + '/' + fna, 'rU') as handle:
-            seq = SeqIO.read(handle, 'fasta')
+            record = SeqIO.read(handle, 'fasta')
 
-        with open(files + '/' + fna, 'w') as out:
-            out.write('>gi|' + gi[ind] + '|ref|' + seq.id + '|' + \
-            seq.description[len(seq.id):] + '\n' + seq.id + '\n')
+            if not 'gi|' in record.id:
+                # print(fna)
+                with open(files + '/' + fna, 'w') as out:
+                    out.write('>gi|'+gi[ind]+'|ref|'+record.id+'|'+record.description[len(record.id):]+'\n'+str(record.seq))
 
     except ValueError:
         print('ERROR: This search does not include the acc. number', fna)
