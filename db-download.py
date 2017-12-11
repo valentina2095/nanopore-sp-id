@@ -11,7 +11,8 @@ import glob
 import argparse
 
 parser = argparse.ArgumentParser(description='download specific database from\
-                                GenBank.')
+                                GenBank.', formatter_class=(argparse
+                                .ArgumentDefaultsHelpFormatter))
 parser.add_argument('email', metavar='name@example.com', type=str, help='email\
                     for NCBI Entrez tools')
 parser.add_argument('--org', metavar='ORGANISM', type=str, help='add organism\
@@ -19,8 +20,8 @@ parser.add_argument('--org', metavar='ORGANISM', type=str, help='add organism\
                     Rodentia, 9989)')
 parser.add_argument('--strain', type=str, help='add the\
                     strain to search for. (e.g. HUSEC2011)')
-parser.add_argument('--start', type=int, help='starting point for esearch,\
-                    Defaults to 0.')
+parser.add_argument('--start', type=int, help='starting point for esearch.',
+                    default=0)
 
 args = parser.parse_args()
 
@@ -57,7 +58,7 @@ print('\n Here is the complete search line that will be used: \n', search_phrase
 
 unprocessed = []
 
-rstart = args.start if args.start else 0
+rstart = args.start
 rmax = 2000
 for i in range(5):
     handle = Entrez.esearch(db='nuccore', term=search_phrase,
