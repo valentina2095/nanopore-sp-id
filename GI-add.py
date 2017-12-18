@@ -33,7 +33,9 @@ for fna in os.listdir(files):
             if not 'gi|' in record.id:
                 # print(fna)
                 with open(files + '/' + fna, 'w') as out:
-                    out.write('>gi|'+gi[ind]+'|ref|'+record.id+'|'+record.description[len(record.id):]+'\n'+str(record.seq))
+                    out.write('>gi|{}|ref|{}|{}\n{}\n'.format(gi[ind],
+                              record.id, record.description[len(record.id):],
+                              str(record.seq)))
 
     except ValueError:
         print('ERROR: This search does not include the acc. number', fna)
